@@ -22,6 +22,7 @@ defmodule RinhaBackend2026.ReferenceIndex do
   def init(opts) do
     resource_paths = Keyword.get(opts, :resource_paths, Config.resource_paths())
     state = Scoring.load_resources!(resource_paths)
+    maybe_notify_ready(Keyword.get(opts, :notify), self())
 
     {:ok, state}
   end
@@ -39,4 +40,7 @@ defmodule RinhaBackend2026.ReferenceIndex do
   def handle_call({:score, payload}, _from, state) do
     {:reply, Scoring.score(payload, state), state}
   end
+
+  defp maybe_notify_ready(nil, _pid), do: :ok
+  defp maybe_notify_ready(notify, pid), do: send(notify, {:reference_index_ready, pid})
 end
