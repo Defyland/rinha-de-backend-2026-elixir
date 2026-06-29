@@ -41,6 +41,57 @@ defmodule RinhaBackend2026.ScoringTest do
     end)
   end
 
+  test "vectorizes the official fraud example" do
+    payload = %{
+      "id" => "tx-3330991687",
+      "transaction" => %{
+        "amount" => 9505.97,
+        "installments" => 10,
+        "requested_at" => "2026-03-14T05:15:12Z"
+      },
+      "customer" => %{
+        "avg_amount" => 81.28,
+        "tx_count_24h" => 20,
+        "known_merchants" => ["MERC-008", "MERC-007", "MERC-005"]
+      },
+      "merchant" => %{
+        "id" => "MERC-068",
+        "mcc" => "7802",
+        "avg_amount" => 54.86
+      },
+      "terminal" => %{
+        "is_online" => false,
+        "card_present" => true,
+        "km_from_home" => 952.27
+      },
+      "last_transaction" => nil
+    }
+
+    assert {:ok, vector} = Scoring.vectorize(payload, @normalization, @mcc_risk)
+
+    expected = [
+      0.950597,
+      0.8333333333333334,
+      1.0,
+      0.21739130434782608,
+      0.8333333333333334,
+      -1.0,
+      -1.0,
+      0.95227,
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      0.75,
+      0.005486
+    ]
+
+    Enum.zip(vector, expected)
+    |> Enum.each(fn {actual, expected_value} ->
+      assert abs(actual - expected_value) < 0.0005
+    end)
+  end
+
   test "scores against a small exact knn dataset" do
     state = %{
       normalization: @normalization,
