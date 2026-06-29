@@ -4,4 +4,4 @@ erl_crash.dump
 *.ez
 *.beam
 /.elixir_ls/
-
+resources/references.json.gz

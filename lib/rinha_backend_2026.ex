@@ -1,8 +1,10 @@
 defmodule RinhaBackend2026 do
-  @moduledoc false
+  @moduledoc """
+  Public entrypoints for the challenge runtime.
+  """
 
-  def bootstrap_message do
-    "rinha-de-backend-2026 Elixir bootstrap"
-  end
+  alias RinhaBackend2026.ReferenceIndex
+
+  def score(payload), do: ReferenceIndex.score(payload)
+  def ready_status, do: ReferenceIndex.ready_status()
 end
-
