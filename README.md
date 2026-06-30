@@ -143,3 +143,11 @@ What is intentionally still not final:
 - [docs/verification/supervision-restart-proof.md](docs/verification/supervision-restart-proof.md)
 - [docs/examples/legit-request.json](docs/examples/legit-request.json)
 - [docs/examples/fraud-request.json](docs/examples/fraud-request.json)
+
+## License
+
+This repository is published under the MIT License. See
+[LICENSE.txt](LICENSE.txt).
+
+That keeps the OTP baseline and its verification notes reusable for study and
+internal experimentation.
